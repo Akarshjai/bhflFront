@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Select from "react-select";
-import "./index.css"; // Make sure to import the CSS
+import "./index.css"; // Make sure your CSS is imported
 
 const App = () => {
   const [jsonInput, setJsonInput] = useState("");
@@ -10,7 +10,10 @@ const App = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Use your backend URL or environment variable here
+  // Track whether the input JSON is valid
+  const [isJsonValid, setIsJsonValid] = useState(false);
+
+  // Use your actual backend URL here
   const backendURL = "https://bfhlback-kaqp.onrender.com/bfhl";
 
   const handleSubmit = async () => {
@@ -20,16 +23,23 @@ const App = () => {
 
     try {
       const parsedJson = JSON.parse(jsonInput);
+      // Basic validation check: must have 'data' array
       if (!parsedJson.data || !Array.isArray(parsedJson.data)) {
         setError("Invalid format. Ensure it has a 'data' array.");
+        setIsJsonValid(false);
         setLoading(false);
         return;
       }
 
+      // If JSON is valid, set flag to true
+      setIsJsonValid(true);
+
+      // Proceed to make the request
       const res = await axios.post(backendURL, parsedJson);
       setResponse(res.data);
     } catch (err) {
       setError("Invalid format or server error.");
+      setIsJsonValid(false);
     } finally {
       setLoading(false);
     }
@@ -42,7 +52,7 @@ const App = () => {
   ];
 
   const handleFilterApply = () => {
-    // Optionally implement additional client-side filtering here
+    // Optional: implement additional client-side filtering here if desired
   };
 
   return (
@@ -61,27 +71,30 @@ const App = () => {
             className="json-textarea"
           />
           {error && <div className="error-message">{error}</div>}
+
           <button className="btn" onClick={handleSubmit} disabled={loading}>
             {loading ? "Processing..." : "Submit"}
           </button>
         </div>
 
-        {/* Filter Section */}
-        <div className="filter-section">
-          <h2>Multi Filter</h2>
-          <Select
-            isMulti
-            options={filterOptions}
-            onChange={setSelectedFilters}
-            placeholder="Select Filters"
-            className="select-box"
-          />
-          <button className="btn filter-btn" onClick={handleFilterApply}>
-            Apply Filters
-          </button>
-        </div>
+        {/* Show the Multi Filter only if JSON is valid */}
+        {isJsonValid && (
+          <div className="filter-section">
+            <h2>Multi Filter</h2>
+            <Select
+              isMulti
+              options={filterOptions}
+              onChange={setSelectedFilters}
+              placeholder="Select Filters"
+              className="select-box"
+            />
+            <button className="btn filter-btn" onClick={handleFilterApply}>
+              Apply Filters
+            </button>
+          </div>
+        )}
 
-        {/* Response Section */}
+        {/* Response Section (if the server returned data) */}
         {response && (
           <div className="response-box fade-in">
             <h2>Filtered Response</h2>
