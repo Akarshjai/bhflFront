@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import Select from "react-select";
+import "./index.css"; // Make sure to import the CSS
 
 const App = () => {
   const [jsonInput, setJsonInput] = useState("");
@@ -9,12 +10,14 @@ const App = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Use your backend URL or environment variable here
   const backendURL = "https://bfhlback-kaqp.onrender.com/bfhl";
 
   const handleSubmit = async () => {
     setError("");
     setResponse(null);
     setLoading(true);
+
     try {
       const parsedJson = JSON.parse(jsonInput);
       if (!parsedJson.data || !Array.isArray(parsedJson.data)) {
@@ -32,63 +35,63 @@ const App = () => {
     }
   };
 
-  const options = [
+  const filterOptions = [
     { value: "numbers", label: "Numbers" },
     { value: "alphabets", label: "Alphabets" },
     { value: "highest_alphabet", label: "Highest Alphabet" },
   ];
 
-  const renderResponse = () => {
-    if (!response) return null;
-    return (
-      <div className="response-box">
-        <h2>Response:</h2>
-        <div className="response-detail">
-          <p>
-            <span>User ID:</span> {response.user_id}
-          </p>
-          <p>
-            <span>Email:</span> {response.email}
-          </p>
-          <p>
-            <span>Roll Number:</span> {response.roll_number}
-          </p>
-          {selectedFilters.map((filter) => (
-            <p key={filter.value}>
-              <span>{filter.label}:</span>{" "}
-              {response[filter.value]?.join(", ") || "N/A"}
-            </p>
-          ))}
-        </div>
-      </div>
-    );
+  const handleFilterApply = () => {
+    // Optionally implement additional client-side filtering here
   };
 
   return (
     <div className="app-container">
+      <h1 className="title">Interactive API Interface</h1>
+
       <div className="card">
-        <h1>API Interface</h1>
-        <textarea
-          value={jsonInput}
-          onChange={(e) => setJsonInput(e.target.value)}
-          placeholder='Enter JSON e.g., { "data": ["A", "1", "B", "2"] }'
-          rows={6}
-        />
-        {error && <div className="error-message">{error}</div>}
-        <button onClick={handleSubmit} disabled={loading}>
-          {loading ? "Processing..." : "Submit"}
-        </button>
+        {/* Input Section */}
+        <div className="input-section">
+          <h2>Input JSON</h2>
+          <textarea
+            value={jsonInput}
+            onChange={(e) => setJsonInput(e.target.value)}
+            placeholder='e.g., { "data": ["A", "1", "B", "2"] }'
+            rows={4}
+            className="json-textarea"
+          />
+          {error && <div className="error-message">{error}</div>}
+          <button className="btn" onClick={handleSubmit} disabled={loading}>
+            {loading ? "Processing..." : "Submit"}
+          </button>
+        </div>
+
+        {/* Filter Section */}
+        <div className="filter-section">
+          <h2>Multi Filter</h2>
+          <Select
+            isMulti
+            options={filterOptions}
+            onChange={setSelectedFilters}
+            placeholder="Select Filters"
+            className="select-box"
+          />
+          <button className="btn filter-btn" onClick={handleFilterApply}>
+            Apply Filters
+          </button>
+        </div>
+
+        {/* Response Section */}
         {response && (
-          <>
-            <Select
-              isMulti
-              options={options}
-              onChange={setSelectedFilters}
-              placeholder="Select Filters"
-              className="select-box"
-            />
-            {renderResponse()}
-          </>
+          <div className="response-box fade-in">
+            <h2>Filtered Response</h2>
+            {selectedFilters.map((filter) => (
+              <p key={filter.value} className="filter-response">
+                <strong>{filter.label}:</strong>{" "}
+                {response[filter.value]?.join(", ") || "N/A"}
+              </p>
+            ))}
+          </div>
         )}
       </div>
     </div>
