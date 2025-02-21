@@ -1,116 +1,146 @@
-/* Global Styles */
+/* 
+  1. Body & Container Styles
+  2. Card & Layout
+  3. Textarea & Button
+  4. Filters & Response
+  5. Animations
+*/
+
+/* 1. Body & Container Styles */
 body {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #f3f4f6, #dfe3e6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
+  color: #333;
 }
 
-/* Container for the app */
 .app-container {
-  width: 90%;
-  max-width: 600px;
-  margin: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
-/* Card styling */
+/* Title */
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #444;
+  text-shadow: 1px 1px 2px #ccc;
+}
+
+/* 2. Card & Layout */
 .card {
-  background: #ffffff;
+  background: #fff;
   border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  margin: 0 auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: 700px;
+  text-align: left; /* Keep text left-aligned within the card */
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Headings */
-.card h1 {
-  margin-bottom: 20px;
-  font-size: 2rem;
-  color: #333;
+.input-section, .filter-section {
+  margin-bottom: 2rem;
 }
 
-/* Textarea styling */
-textarea {
+/* 3. Textarea & Button */
+.json-textarea {
   width: 100%;
-  padding: 15px;
-  font-size: 16px;
+  max-width: 600px;
+  margin-bottom: 1rem;
+  padding: 1rem;
   border: 2px solid #ccc;
   border-radius: 8px;
+  font-size: 1rem;
   resize: vertical;
+  outline: none;
   transition: border-color 0.3s ease;
 }
 
-textarea:focus {
-  border-color: #007bff;
-  outline: none;
+.json-textarea:focus {
+  border-color: #f06d8e;
 }
 
-/* Button styling */
-button {
-  margin-top: 15px;
-  padding: 12px 20px;
-  font-size: 16px;
-  font-weight: bold;
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
   color: #fff;
-  background-color: #007bff;
+  background: #f06d8e;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
+.btn:hover {
+  background: #f286a2;
+  transform: scale(1.03);
 }
 
-button:disabled {
-  background-color: #6c757d;
+.btn:disabled {
+  background: #999;
   cursor: not-allowed;
 }
 
-/* Error message styling */
-.error-message {
-  margin-top: 10px;
-  color: #ff4d4d;
-  font-weight: bold;
+/* 4. Filters & Response */
+.filter-section .select-box {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
 }
 
-/* Response box styling */
+.filter-btn {
+  margin-left: 0;
+}
+
 .response-box {
-  margin-top: 20px;
-  background: #f8f9fa;
-  padding: 20px;
+  background: #fafafa;
+  padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .response-box h2 {
-  margin-bottom: 15px;
-  font-size: 1.5rem;
-  color: #333;
+  margin-bottom: 1rem;
+  color: #f06d8e;
 }
 
-.response-detail p {
-  margin: 8px 0;
-  font-size: 16px;
+.filter-response {
+  margin: 0.5rem 0;
+  font-size: 1rem;
 }
 
-.response-detail p span {
-  font-weight: bold;
-  margin-right: 5px;
+/* Error message */
+.error-message {
+  color: #ff4d4d;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
-/* React-select customization */
-.select-box {
-  margin-top: 20px;
+/* 5. Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
